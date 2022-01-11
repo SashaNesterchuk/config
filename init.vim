@@ -31,14 +31,7 @@ set showcmd " extra info at end of command line
 set wildignore+=*/node_modules/**
 filetype plugin indent on
 
-" folding
-" set foldmethod=syntax "syntax highlighting items specify folds  
-" set foldcolumn=1 "defines 1 col at window left, to indicate folding  
-" let javaScript_fold=1 "activate folding by JS syntax  
-" set foldlevelstart=99 "start file with all folds opened
-
 set foldlevel=20
-" set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
 " attempt to speed-up vim
@@ -52,7 +45,6 @@ set lazyredraw
 
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
-" PlugInstall PlugClean PlugUpdate
 
 " Dashboard
 Plug 'glepnir/dashboard-nvim'
@@ -167,28 +159,8 @@ EOF
 nnoremap <leader>sb <cmd>SidebarNvimToggl<cr>
 " }}}
 
-" export-to-vscode {{{
-" nnoremap <silent> <leader>code <cmd>lua require('export-to-vscode').launch()<cr>
-" lua << EOF
-" --vim.api.nvim_set_keymap(
-" --  'n',
-" --  '<leader>code',
-" --  '<cmd>lua require("export-to-vscode").launch()<cr>',
-" --  { noremap = true, silent = true }
-" --)
-" EOF
-" }}}
 " Colors {{{
-"if (has("termguicolors"))
-  "set termguicolors " enable true colors support
-"endif
-"let g:dracula_colorterm = 0
-"let g:dracula_italic = 1
 colorscheme onebuddy
-" colorscheme dracula
-" set background=dark " light or dark
-" colorscheme onebuddy
-"
 
 lua << EOF
 --require('github-theme').setup({
@@ -218,54 +190,6 @@ let mapleader = " "
 lua << EOF
 require('lspkind').init({})
 EOF
-" }}}
-
-" 'akinsho/nvim-bufferline.lua' {{{
-" lua << EOF
-" vim.api.nvim_exec([[let $KITTY_WINDOW_ID=0]], true)
-" require("bufferline").setup{
-  " highlights = {
-    " fill = {
-      " guibg = "#282828"
-    " },
-    " separator_selected = {
-      " guifg = "#282828"
-    " },
-    " separator_visible = {
-      " guifg = "#282828"
-    " },
-    " separator = {
-      " guifg = "#282828"
-    " }
-  " },
-  " options = {
-    " modified_icon = "●",
-    " left_trunc_marker = "",
-    " right_trunc_marker = "",
-    " max_name_length = 25,
-    " max_prefix_length = 25,
-    " enforce_regular_tabs = false,
-    " view = "multiwindow",
-    " show_buffer_close_icons = true,
-    " show_close_icon = false,
-    " separator_style = "slant",
-    " diagnostics = "nvim_lsp",
-    " diagnostics_update_in_insert = false,
-    " diagnostics_indicator = function(count, level, diagnostics_dict, context)
-      " return "("..count..")"
-    " end,
-    " offsets = {
-      " {
-        " filetype = "coc-explorer",
-        " text = "File Explorer",
-        " highlight = "Directory",
-        " text_align = "center"
-      " }
-    " }
-  " }
-" }
-" EOF
-" nnoremap <silent> gb :BufferLinePick<CR>
 " }}}
 
 " Plug 'APZelos/blamer.nvim' {{{
@@ -606,8 +530,6 @@ let g:dashboard_custom_footer = s:footer
 " }}}
 
 " kyazdani42/nvim-tree.lua {{{
-let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ]
-let g:nvim_tree_gitignore = 1
 " let g:nvim_tree_auto_close = 1
 " let g:nvim_tree_auto_ignore_ft = [ 'startify', 'dashboard' ]
 let g:nvim_tree_quit_on_open = 1
@@ -620,6 +542,12 @@ let g:nvim_tree_group_empty = 1
 lua << EOF
 require'nvim-tree'.setup {
   auto_close = true,
+  git = {
+      ignore = 1
+  },
+  filters = {
+    custom = {'.git', 'node_modules', '.cache'}
+  },
   -- lsp_diagnostics = true,
   ignore_ft_on_setup  = { 'startify', 'dashboard' },
 }
